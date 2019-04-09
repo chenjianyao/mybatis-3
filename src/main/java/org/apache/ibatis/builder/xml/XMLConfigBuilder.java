@@ -27,6 +27,7 @@ import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.executor.loader.ProxyFactory;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.io.VFS;
+import org.apache.ibatis.logging.DevLog;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.Environment;
@@ -83,7 +84,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
-    super(new Configuration());
+    super(new Configuration());//构建Configuration、全局唯一Configuration对象
     ErrorContext.instance().resource("SQL Mapper Configuration");
     this.configuration.setVariables(props);
     this.parsed = false;
@@ -91,16 +92,34 @@ public class XMLConfigBuilder extends BaseBuilder {
     this.parser = parser;
   }
 
-  public Configuration parse() {
+/**
+ * <p>
+ * 关键方法、根据xml配置解析映射为Configuration对象
+ * </p>
+ * 开始解析XML配置/组装Configuation对象
+ *
+ * @return
+ */
+public Configuration parse() {
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
+    DevLog.info("开始解析XML配置 XMLConfigBuilder.parse()");
     parsed = true;
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
 
-  private void parseConfiguration(XNode root) {
+  /**
+ * <p>
+ * 解析Xml中Configuration根节点下面的子节点、按顺序解析<br>
+ * 解析顺序为: properties/settings/typeAliases/plugins/objectFactory/objectWrapperFactory/reflectorFactory/environments/databaseIdProvider/typeHandlers/mappers
+ * </p>
+ *
+ * @param root
+ */
+private void parseConfiguration(XNode root) {
+    DevLog.info("开始解析XML配置 ,解析顺序为:properties/settings/typeAliases/plugins/objectFactory/objectWrapperFactory/reflectorFactory/environments/databaseIdProvider/typeHandlers/mappers");
     try {
       //issue #117 read properties first
       propertiesElement(root.evalNode("properties"));

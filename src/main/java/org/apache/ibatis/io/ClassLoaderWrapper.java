@@ -18,17 +18,23 @@ package org.apache.ibatis.io;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.apache.ibatis.logging.DevLog;
+
 /**
+ * 封装了5个类加载器<br><br>
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin
  */
 public class ClassLoaderWrapper {
 
+  /**默认类加载器*/
   ClassLoader defaultClassLoader;
+  /**系统类加载器*/
   ClassLoader systemClassLoader;
 
   ClassLoaderWrapper() {
+    DevLog.debug("实例化ClassLoaderWrapper对象，设置systemClassLoader默认值");  
     try {
       systemClassLoader = ClassLoader.getSystemClassLoader();
     } catch (SecurityException ignored) {
@@ -201,11 +207,17 @@ public class ClassLoaderWrapper {
 
   }
 
-  ClassLoader[] getClassLoaders(ClassLoader classLoader) {
+/**
+ * 返回5个类加载器
+ *
+ * @param classLoader
+ * @return
+ */
+ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
         classLoader,
         defaultClassLoader,
-        Thread.currentThread().getContextClassLoader(),
+        Thread.currentThread().getContextClassLoader(), //相比下面getClass().getClassLoader()更安全、tomcat加载Jar，应使用Thread方式获取资源
         getClass().getClassLoader(),
         systemClassLoader};
   }

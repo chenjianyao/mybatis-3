@@ -32,7 +32,8 @@ import java.util.Properties;
  */
 public class Resources {
 
-  private static ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
+    /** 大多数方法都是委托给ClassLoaderWrapper去做真正的事 */
+    private static ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
 
   /*
    * Charset to use when calling getResourceAsReader.
@@ -147,7 +148,8 @@ public class Resources {
     return props;
   }
 
-  /*
+  /**
+   * 
    * Returns a resource on the classpath as a Reader object
    *
    * @param resource The resource to find

@@ -26,12 +26,21 @@ import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 
 /**
+ * <p>
+ * SqlSessionFactory构造器类，提供构建SqlSessionFactory的几个方法，可以根据字节流和字符流构建SqlSessionFactory
+ * </p>
  * Builds {@link SqlSession} instances.
  *
  * @author Clinton Begin
  */
 public class SqlSessionFactoryBuilder {
 
+  /**
+ * 根据字符流构建
+ *
+ * @param reader
+ * @return
+ */
   public SqlSessionFactory build(Reader reader) {
     return build(reader, null, null);
   }
@@ -46,7 +55,7 @@ public class SqlSessionFactoryBuilder {
 
   public SqlSessionFactory build(Reader reader, String environment, Properties properties) {
     try {
-      XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);
+      XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);//构建XMLConfigBuilder、全局唯一XMLConfigBuilder对象
       return build(parser.parse());
     } catch (Exception e) {
       throw ExceptionFactory.wrapException("Error building SqlSession.", e);

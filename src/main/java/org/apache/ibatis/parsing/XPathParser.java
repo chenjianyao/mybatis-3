@@ -225,11 +225,17 @@ public class XPathParser {
     }
   }
 
-  private Document createDocument(InputSource inputSource) {
+/**
+ * 使用Java本身自带的JAXP
+ *
+ * @param inputSource
+ * @return
+ */
+private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
     try {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      factory.setValidating(validation);
+      factory.setValidating(validation); //设置解析器在解析文档的时候校验文档
 
       factory.setNamespaceAware(false);
       factory.setIgnoringComments(true);
@@ -238,7 +244,7 @@ public class XPathParser {
       factory.setExpandEntityReferences(true);
 
       DocumentBuilder builder = factory.newDocumentBuilder();
-      builder.setEntityResolver(entityResolver);
+      builder.setEntityResolver(entityResolver); // 解析的验证文件XSD来源
       builder.setErrorHandler(new ErrorHandler() {
         @Override
         public void error(SAXParseException exception) throws SAXException {

@@ -92,12 +92,15 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * MyBatis所有的配置信息都维持在Configuration对象之中。
+ * 
  * @author Clinton Begin
  */
 public class Configuration {
 
   protected Environment environment;
 
+  /***/
   protected boolean safeRowBoundsEnabled;
   protected boolean safeResultHandlerEnabled = true;
   protected boolean mapUnderscoreToCamelCase;
@@ -121,7 +124,9 @@ public class Configuration {
   protected ExecutorType defaultExecutorType = ExecutorType.SIMPLE;
   protected AutoMappingBehavior autoMappingBehavior = AutoMappingBehavior.PARTIAL;
   protected AutoMappingUnknownColumnBehavior autoMappingUnknownColumnBehavior = AutoMappingUnknownColumnBehavior.NONE;
-
+  /***/
+  
+  /** 全局变量 可以外部传入或者在配置文件中properties节点配置*/
   protected Properties variables = new Properties();
   protected ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
   protected ObjectFactory objectFactory = new DefaultObjectFactory();
@@ -388,6 +393,11 @@ public class Configuration {
     this.useGeneratedKeys = useGeneratedKeys;
   }
 
+/**
+ * 获取DefaultExecutorType
+ *
+ * @return
+ */
   public ExecutorType getDefaultExecutorType() {
     return defaultExecutorType;
   }
