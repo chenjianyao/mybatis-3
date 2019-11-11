@@ -65,12 +65,12 @@
   <p>这部分内容剩余的示例将假设你使用了这种目录结构。</p>
   </subsection>
 
-  <subsection name="SqlSessions" id="sqlSessions">
-  <p>使用 MyBatis 的主要 Java 接口就是 SqlSession。你可以通过这个接口来执行命令，获取映射器和管理事务。我们会概括讨论一下 SqlSession 本身，但是首先我们还是要了解如何获取一个 SqlSession 实例。SqlSessions 是由 SqlSessionFactory 实例创建的。SqlSessionFactory 对象包含创建 SqlSession 实例的所有方法。而 SqlSessionFactory 本身是由 SqlSessionFactoryBuilder 创建的，它可以从 XML、注解或手动配置 Java 代码来创建 SqlSessionFactory。</p>
+  <subsection name="SqlSession" id="sqlSessions">
+  <p>使用 MyBatis 的主要 Java 接口就是 SqlSession。你可以通过这个接口来执行命令，获取映射器和管理事务。我们会概括讨论一下 SqlSession 本身，但是首先我们还是要了解如何获取一个 SqlSession 实例。SqlSession 是由 SqlSessionFactory 实例创建的。SqlSessionFactory 对象包含创建 SqlSession 实例的所有方法。而 SqlSessionFactory 本身是由 SqlSessionFactoryBuilder 创建的，它可以从 XML、注解或手动配置 Java 代码来创建 SqlSessionFactory。</p>
   <p>
-  <span class="label important">注意</span> 当 Mybatis 与一些依赖注入框架（如 Spring 或者 Guice）同时使用时，SqlSessions 将被依赖注入框架所创建，所以你不需要使用 SqlSessionFactoryBuilder 或者 SqlSessionFactory，可以直接看 SqlSession 这一节。请参考 Mybatis-Spring 或者 Mybatis-Guice 手册了解更多信息。</p>
+  <span class="label important">注意</span> 当 Mybatis 与一些依赖注入框架（如 Spring 或者 Guice）同时使用时，SqlSession 将被依赖注入框架所创建，所以你不需要使用 SqlSessionFactoryBuilder 或者 SqlSessionFactory，可以直接看 SqlSession 这一节。请参考 Mybatis-Spring 或者 Mybatis-Guice 手册了解更多信息。</p>
   <h4>SqlSessionFactoryBuilder</h4>
-  <p>SqlSessionFactoryBuilder 有五个 build() 方法，每一种都允许你从不同的资源中创建一个 SqlSession 实例。</p>
+  <p>SqlSessionFactoryBuilder 有五个 build() 方法，每一种都允许你从不同的资源中创建一个 SqlSessionFactory 实例。</p>
   <source>SqlSessionFactory build(InputStream inputStream)
 SqlSessionFactory build(InputStream inputStream, String environment)
 SqlSessionFactory build(InputStream inputStream, Properties properties)
@@ -360,7 +360,7 @@ void rollback(boolean force)</source>
             <li><code>&lt;idArg&gt;</code></li>
           </ul>
         </td>
-        <td>单参数构造方法，是 ConstructorArgs 集合的一部分。属性有：<code>id</code>, <code>column</code>, <code>javaType</code>, <code>jdbcType</code>, <code>typeHandler</code>, <code>select</code> 和 <code>resultMap</code>。id 属性是布尔值，来标识用于比较的属性，和<code>&lt;idArg&gt;</code> XML 元素相似。</td>
+        <td>单参数构造方法，是 ConstructorArgs 集合的一部分。属性有：<code>id</code>, <code>column</code>, <code>javaType</code>, <code>jdbcType</code>, <code>typeHandler</code>, <code>select</code> 和 <code>resultMap</code>。id 属性是布尔值，来标识用于比较的属性，和<code>&lt;idArg&gt;</code> XML 元素相似。Since 3.5.4, it can be used as repeatable annotation.</td>
       </tr>
       <tr>
         <td><code>@TypeDiscriminator</code></td>
@@ -389,7 +389,7 @@ void rollback(boolean force)</source>
             <li><code>&lt;id&gt;</code></li>
           </ul>
         </td>
-        <td>在列和属性或字段之间的单独结果映射。属性有：<code>id</code>, <code>column</code>, <code>javaType</code>, <code>jdbcType</code>, <code>typeHandler</code>, <code>one</code>, <code>many</code>。id 属性是一个布尔值，来标识应该被用于比较（和在 XML 映射中的<code>&lt;id&gt;</code>相似）的属性。one 属性是单独的联系，和 <code>&lt;association&gt;</code> 相似，而 many 属性是对集合而言的，和<code>&lt;collection&gt;</code>相似。它们这样命名是为了避免名称冲突。</td>
+        <td>在列和属性或字段之间的单独结果映射。属性有：<code>id</code>, <code>column</code>, <code>javaType</code>, <code>jdbcType</code>, <code>typeHandler</code>, <code>one</code>, <code>many</code>。id 属性是一个布尔值，来标识应该被用于比较（和在 XML 映射中的<code>&lt;id&gt;</code>相似）的属性。one 属性是单独的联系，和 <code>&lt;association&gt;</code> 相似，而 many 属性是对集合而言的，和<code>&lt;collection&gt;</code>相似。它们这样命名是为了避免名称冲突。Since 3.5.4, it can be used as repeatable annotation.</td>
       </tr>
       <tr>
         <td><code>@One</code></td>
