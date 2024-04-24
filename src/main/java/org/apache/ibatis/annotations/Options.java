@@ -1,11 +1,11 @@
-/**
- *    Copyright 2009-2019 the original author or authors.
+/*
+ *    Copyright 2009-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *    Unless required by applicable law or agreed to in writing, software
  *    distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.apache.ibatis.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -26,25 +27,26 @@ import org.apache.ibatis.mapping.StatementType;
 
 /**
  * The annotation that specify options for customizing default behaviors.
- *
- * <p><br>
+ * <p>
  * <b>How to use:</b>
+ *
  * <pre>
  * public interface UserMapper {
- *   &#064;Option(useGeneratedKeys = true, keyProperty = "id")
+ *   &#064;Options(useGeneratedKeys = true, keyProperty = "id")
  *   &#064;Insert("INSERT INTO users (name) VALUES(#{name})")
  *   boolean insert(User user);
  * }
  * </pre>
+ *
  * @author Clinton Begin
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Repeatable(Options.List.class)
 public @interface Options {
   /**
-   * The options for the {@link Options#flushCache()}.
-   * The default is {@link FlushCachePolicy#DEFAULT}
+   * The options for the {@link Options#flushCache()}. The default is {@link FlushCachePolicy#DEFAULT}
    */
   enum FlushCachePolicy {
     /** <code>false</code> for select statement; <code>true</code> for insert/update/delete statement. */
@@ -92,6 +94,7 @@ public @interface Options {
 
   /**
    * Returns the statement timeout.
+   *
    * @return the statement timeout
    */
   int timeout() default -1;
@@ -132,4 +135,26 @@ public @interface Options {
    * @return result set names that separate with comma(',')
    */
   String resultSets() default "";
+
+  /**
+   * @return A database id that correspond this options
+   *
+   * @since 3.5.5
+   */
+  String databaseId() default "";
+
+  /**
+   * The container annotation for {@link Options}.
+   *
+   * @author Kazuki Shimizu
+   *
+   * @since 3.5.5
+   */
+  @Documented
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  @interface List {
+    Options[] value();
+  }
+
 }

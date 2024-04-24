@@ -1,11 +1,11 @@
-/**
- *    Copyright 2009-2019 the original author or authors.
+/*
+ *    Copyright 2009-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *    Unless required by applicable law or agreed to in writing, software
  *    distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,14 @@
  */
 package org.apache.ibatis.type;
 
-import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.sql.SQLException;
 
 import org.apache.ibatis.executor.result.ResultMapException;
 import org.apache.ibatis.session.Configuration;
@@ -103,7 +106,8 @@ class UnknownTypeHandlerTest extends BaseTypeHandlerTest {
 
   @Test
   void setParameterWithNonNullParameterThrowsException() throws SQLException {
-    doThrow(new SQLException("invalid column")).when((UnknownTypeHandler) TYPE_HANDLER).setNonNullParameter(ps, 1, 99, JdbcType.INTEGER);
+    doThrow(new SQLException("invalid column")).when((UnknownTypeHandler) TYPE_HANDLER).setNonNullParameter(ps, 1, 99,
+        JdbcType.INTEGER);
     try {
       TYPE_HANDLER.setParameter(ps, 1, 99, JdbcType.INTEGER);
       Assertions.fail("Should have thrown a TypeException");
